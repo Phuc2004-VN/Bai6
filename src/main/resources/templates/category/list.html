@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{_layout}">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div layout:fragment="content" class="container body-content">
+        <h2 class="mb-4">Quản lý Danh Mục</h2>
+        <a th:href="@{/categories/add}" class="btn btn-primary mb-3">Thêm danh mục mới</a>
+        
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Tên danh mục</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="cat : ${categories}">
+                    <td th:text="${cat.id}"></td>
+                    <td th:text="${cat.name}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

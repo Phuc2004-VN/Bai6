@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="html://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div layout:fragment="content" class="container body-content">
+        <h2 class="mb-4">Danh sách sản phẩm</h2>
+        
+        <div sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/products/add}" class="btn btn-primary mb-3">Thêm sản phẩm mới</a>
+        </div>
+        
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Hình ảnh</th>
+                    <th scope="col">Giá (VNĐ)</th>
+                    <th scope="col">Danh mục</th>
+                    <div sec:authorize="hasRole('ADMIN')">
+                    <th scope="col">Hành động</th>
+                    </div>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product : ${products}">
+                    <th scope="row" th:text="${product.id}"></th>
+                    <td th:text="${product.name}"></td>
+                    <td>
+                        <img height="100" width="130" th:if="${product.image != null and !product.image.isEmpty()}" th:src="${product.image}" alt="Ảnh sản phẩm">
+                    </td>
+                    <!-- <td>
+                        <img th:if="${product.image != null}" 
+                             th:src="@{/images/} + ${product.image}" 
+                             height="120" width="150" alt="Product Image">
+                    </td> -->
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.category != null ? product.category.name : 'Chưa có'}"></td>
+                    <div sec:authorize="hasRole('ADMIN')">
+                    <td>
+                        <form th:action="@{/products/edit/{id}(id=${product.id})}" method="get" style="display:inline;">
+                            <button type="submit" class="btn btn-warning btn-sm">Sửa</button>
+                        </form>
+                        <form th:action="@{/products/delete/{id}(id=${product.id})}" method="get" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                        </form>
+                    </td>
+                    </div>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
